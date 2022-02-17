@@ -1,0 +1,127 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+
+        #multistep-form form {
+
+            -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+            -moz-animation: fadein 1s; /* Firefox < 16 */
+                -ms-animation: fadein 1s; /* Internet Explorer */
+                -o-animation: fadein 1s; /* Opera < 12.1 */
+                    animation: fadein 1s;
+        }
+
+        @keyframes fadein {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* Firefox < 16 */
+        @-moz-keyframes fadein {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* Safari, Chrome and Opera > 12.1 */
+        @-webkit-keyframes fadein {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* Internet Explorer */
+        @-ms-keyframes fadein {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* Opera < 12.1 */
+        @-o-keyframes fadein {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+      
+      @media (max-width: 767px) {
+        h2 {
+          font-size:24px !important;
+          line-height:1.2!important;
+          text-align:center!important;
+        }
+        hs-richtext hs-main-font-element {
+          text-align:center !important;
+        }
+      }
+    </style>
+
+</head>
+<body>
+    <div id="multistep-form"></div>
+    <!--[if lte IE 8]>
+    <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
+    <![endif]-->
+    <!-- You may have to edit src= to be // instead of https:// -->
+    <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/v2.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html> 
+
+<script>
+  // Edit the configuration then copy paste intro <script> tags
+const forms = [
+  "34434991-d95c-4791-ada2-e1c4528a8fcd",
+    "532b542e-f3f6-4f0f-8cbc-cd9d02cbd1b4",
+    "7d0360bf-6890-4c96-80b5-6148d1fe3695",
+    "8bb27ec3-90fc-47dc-9482-29bdb9d8d5ff",
+  	"fea4c872-14a9-41c3-889d-02ed5d068bf3",
+  "e3a3c57b-68c9-415b-8f9a-635da714861d",
+    "91b77552-baff-47dc-834c-be9b32a1648a",
+    "943cedf6-b392-4f52-a371-dcb327835040",
+    "94831991-4c34-4e70-91ea-3f718a6838e5",
+    "765142e2-f16a-40c1-8cf0-c048e0b84b2c",
+  "bfb52869-d29c-489b-ae64-23def384b975"
+];
+const portalId = '20916392';
+const target = '#multistep-form';
+
+// No need to worry about stuff below this point
+const data = [];
+const options = [];
+
+const generateFormOptions = (form, index) => {
+    return {
+        portalId,
+        formId: form,
+        target,
+        onFormReady: function(form) {
+            if (index !== 0) {
+                form.find('input[name="email"]').val(data[0].value).change();
+            }
+        },
+        onFormSubmit: function(form) {
+            if (data.length === 0) {
+                const incoming = $(form).serializeArray();
+                data.push(incoming[0]);
+            }
+        },
+        onFormSubmitted: function() {
+            if (index !== forms.length - 1) {
+                $(target).empty();
+                hbspt.forms.create(options[index + 1]);
+            }
+        }
+    }
+}
+
+const multiStepForm = () => {
+    forms.forEach((form, index) => {
+        options.push(generateFormOptions(form, index));
+    })
+    hbspt.forms.create(options[0]);
+}
+
+multiStepForm();
+</script>
